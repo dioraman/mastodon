@@ -339,6 +339,18 @@ Rails.application.routes.draw do
         end
       end
 
+      namespace :keys do
+        resource :upload, only: [:create]
+        resource :query,  only: [:create]
+        resource :claim,  only: [:create]
+      end
+
+      resources :encrypted_messages, only: [:index] do
+        collection do
+          post :clear
+        end
+      end
+
       resources :conversations, only: [:index, :destroy] do
         member do
           post :read
@@ -392,6 +404,7 @@ Rails.application.routes.draw do
         patch :update_credentials, to: 'credentials#update'
         resource :search, only: :show, controller: :search
         resources :relationships, only: :index
+        resources :deliveries, only: :create
       end
 
       resources :accounts, only: [:create, :show] do
